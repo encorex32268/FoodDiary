@@ -1,4 +1,4 @@
-package com.lee.fooddiary;
+package com.lee.fooddiary.Activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -8,7 +8,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -16,13 +15,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.PixelCopy;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +29,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,11 +39,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.lee.fooddiary.Model.FoodStore;
+import com.lee.fooddiary.R;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -204,8 +198,6 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
     public void onComplete(@NonNull Task<Location> task) {
         if (task.isSuccessful()){
             Location location = task.getResult();
-//            Log.d(TAG, "onComplete: " +
-//                    location.getLatitude() +"," + location.getLongitude());
             getAddress(location);
             moveCamera(new LatLng(location.getLatitude(),location.getLongitude()));
 
@@ -248,21 +240,8 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
                                     if (imageDownloadURL.size() == uriList.size())
                                     {
                                         FoodStore foodStore = setFoodStoreObject();
-                                        FirebaseDatabase.getInstance().getReference("Users")
-                                                .child(uid).child("FoodStores").push().setValue(foodStore).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()){
-                                                    progressbarConstraintLayout.setVisibility(View.GONE);
-                                                    Toast.makeText(AddFoodActivity.this,"儲存成功",Toast.LENGTH_LONG).show();
-                                                    finish();
-                                                }else{
-                                                    progressbarConstraintLayout.setVisibility(View.GONE);
-                                                    view.setClickable(true);
-                                                    Toast.makeText(AddFoodActivity.this,"儲存失敗",Toast.LENGTH_LONG).show();
-                                                }
-                                            }
-                                        });
+                                        saveDataToFirebase(foodStore, uid, view);
+
                                     }
 
                                 }
@@ -281,22 +260,9 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
             }
         }else
         {
+
             FoodStore foodStore = setFoodStoreObject();
-            FirebaseDatabase.getInstance().getReference("Users")
-                    .child(uid).child("FoodStores").push().setValue(foodStore).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-                        progressbarConstraintLayout.setVisibility(View.GONE);
-                        Toast.makeText(AddFoodActivity.this,"儲存成功",Toast.LENGTH_LONG).show();
-                        finish();
-                    }else{
-                        progressbarConstraintLayout.setVisibility(View.GONE);
-                        view.setClickable(true);
-                        Toast.makeText(AddFoodActivity.this,"儲存失敗",Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
+            saveDataToFirebase(foodStore, uid, view);
         }
 
 
@@ -306,6 +272,25 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+    private void saveDataToFirebase(FoodStore foodStore, String uid, final View view) {
+        FirebaseDatabase.getInstance().getReference("FoodStores")
+                .push().setValue(foodStore);
+        FirebaseDatabase.getInstance().getReference("Users")
+                .child(uid).child("FoodStores").push().setValue(foodStore).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    progressbarConstraintLayout.setVisibility(View.GONE);
+                    Toast.makeText(AddFoodActivity.this, "儲存成功", Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    progressbarConstraintLayout.setVisibility(View.GONE);
+                    view.setClickable(true);
+                    Toast.makeText(AddFoodActivity.this, "儲存失敗", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
 
     private String getDate() {

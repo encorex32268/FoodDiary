@@ -1,4 +1,4 @@
-package com.lee.fooddiary;
+package com.lee.fooddiary.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

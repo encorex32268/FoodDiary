@@ -3,10 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/nav_homepage"
         android:icon="@drawable/ic_home"
         android:title="首頁" />
-    <item android:title="  " />
     <item
+        android:checkable="false"
+        android:enabled="false"
+        android:title=" " />
+    <item
+        android:id="@+id/nav_myfood"
         android:icon="@drawable/ic_person"
         android:title="我的食物" />
 </menu>

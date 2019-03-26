@@ -1,4 +1,4 @@
-package com.lee.fooddiary;
+package com.lee.fooddiary.Model;
 
 public class User {
 

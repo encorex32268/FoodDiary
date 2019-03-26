@@ -1,8 +1,11 @@
-package com.lee.fooddiary;
+package com.lee.fooddiary.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.lee.fooddiary.Model.FoodStore;
+import com.lee.fooddiary.R;
 
 public class DetailActivity extends AppCompatActivity {
 
