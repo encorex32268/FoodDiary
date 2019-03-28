@@ -39,14 +39,12 @@ import static android.app.Activity.RESULT_OK;
 public class MyFoodFragment extends Fragment implements FirebaseAuth.AuthStateListener, ValueEventListener, ChildEventListener {
 
     public static final String TAG = HomeFragment.class.getSimpleName();
-    private static final int RC_SIGN_IN = 100;
     private FirebaseAuth mAuth;
     private TextView userText;
     private FirebaseRecyclerAdapter<FoodStore, FoodStoreViewHolder> adapter;
     private RecyclerView recyclerFoodStore;
 
     private static MyFoodFragment instance;
-
     public static MyFoodFragment getInstance() {
         if (instance == null) {
             instance = new MyFoodFragment();
@@ -109,36 +107,6 @@ public class MyFoodFragment extends Fragment implements FirebaseAuth.AuthStateLi
 
     }
 
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        User user = dataSnapshot.getValue(User.class);
-        userText.setText("User : " + user.getName());
-    }
-
-    @Override
-    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-    }
-
-    @Override
-    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-    }
-
-    @Override
-    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-    }
-
-    @Override
-    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-    }
 
     private class FoodStoreViewHolder extends RecyclerView.ViewHolder {
 
@@ -179,12 +147,19 @@ public class MyFoodFragment extends Fragment implements FirebaseAuth.AuthStateLi
         }
     }
 
+
+
+
+    /**
+     * Override void
+     */
+
+
     @Override
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: ");
         mAuth.addAuthStateListener(this);
-        //loadRecycler;
     }
 
     @Override
@@ -202,21 +177,7 @@ public class MyFoodFragment extends Fragment implements FirebaseAuth.AuthStateLi
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build(),
-                    new AuthUI.IdpConfig.GoogleBuilder().build());
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
-                            .setIsSmartLockEnabled(false)
-                            .setLogo(R.mipmap.ic_foodstore)
-                            .build(),
-                    RC_SIGN_IN);
-
-
-        } else {
+        if (currentUser != null) {
             FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getUid()).child("Info")
                     .addValueEventListener(this);
             setUpRecyclerView();
@@ -228,21 +189,34 @@ public class MyFoodFragment extends Fragment implements FirebaseAuth.AuthStateLi
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        User user = dataSnapshot.getValue(User.class);
+        userText.setText("User : " + user.getName());
+    }
 
-        if (requestCode == RC_SIGN_IN && resultCode == RESULT_OK)
-        {
-            FirebaseUser currentUser = mAuth.getCurrentUser();
-            final User user = new User();
-            user.setUid(currentUser.getUid());
-            user.setEmail(currentUser.getEmail());
-            user.setName(currentUser.getDisplayName());
-
-            FirebaseDatabase.getInstance().getReference("Users")
-                    .child(mAuth.getUid())
-                    .child("Info")
-                    .setValue(user);
-        }
+    @Override
+    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
     }
+
+    @Override
+    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+    }
+
+    @Override
+    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+    }
+
 }
