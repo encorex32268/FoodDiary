@@ -17,6 +17,24 @@ public class FoodStore implements Parcelable {
     double latitude;
     double longtiude;
     List<String> imageUrls = new ArrayList<>();
+    boolean isShared ;
+    String key ;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setShared(boolean shared) {
+        isShared = shared;
+    }
 
     public List<String> getImageUrls() {
         return imageUrls;
@@ -96,6 +114,24 @@ public class FoodStore implements Parcelable {
     }
 
 
+
+    @Override
+    public String toString() {
+        return "FoodStore{" +
+                "name='" + name + '\'' +
+                ", date='" + date + '\'' +
+                ", rate=" + rate +
+                ", moneyMin=" + moneyMin +
+                ", moneyMax=" + moneyMax +
+                ", address='" + address + '\'' +
+                ", latitude=" + latitude +
+                ", longtiude=" + longtiude +
+                ", imageUrls=" + imageUrls +
+                ", isShared=" + isShared +
+                ", key='" + key + '\'' +
+                '}';
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -112,6 +148,8 @@ public class FoodStore implements Parcelable {
         dest.writeDouble(this.latitude);
         dest.writeDouble(this.longtiude);
         dest.writeStringList(this.imageUrls);
+        dest.writeByte(this.isShared ? (byte) 1 : (byte) 0);
+        dest.writeString(this.key);
     }
 
     protected FoodStore(Parcel in) {
@@ -124,6 +162,8 @@ public class FoodStore implements Parcelable {
         this.latitude = in.readDouble();
         this.longtiude = in.readDouble();
         this.imageUrls = in.createStringArrayList();
+        this.isShared = in.readByte() != 0;
+        this.key = in.readString();
     }
 
     public static final Parcelable.Creator<FoodStore> CREATOR = new Parcelable.Creator<FoodStore>() {

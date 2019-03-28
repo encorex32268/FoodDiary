@@ -78,7 +78,6 @@ public class MyFoodFragment extends Fragment implements FirebaseAuth.AuthStateLi
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<FoodStore>()
                 .setQuery(query, FoodStore.class)
-
                 .build();
         adapter = new FirebaseRecyclerAdapter<FoodStore, FoodStoreViewHolder>(options) {
             @Override
@@ -170,6 +169,7 @@ public class MyFoodFragment extends Fragment implements FirebaseAuth.AuthStateLi
                     bundle.putParcelable("FOOD", model);
                     intent.putExtra("FOOD", bundle);
                     startActivity(intent);
+
 
                 }
             });

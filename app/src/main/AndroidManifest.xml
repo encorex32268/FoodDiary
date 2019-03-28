@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_foodstore"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.DetailActivity"></activity>
+        <activity android:name=".Activity.DetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

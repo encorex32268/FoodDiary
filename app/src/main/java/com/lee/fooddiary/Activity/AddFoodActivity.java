@@ -277,10 +277,11 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void saveDataToFirebase(FoodStore foodStore, String uid, final View view) {
-        FirebaseDatabase.getInstance().getReference("FoodStores")
-                .push().setValue(foodStore);
+        String key = FirebaseDatabase.getInstance().getReference("Users")
+                .child(uid).child("FoodStores").push().getKey();
+        foodStore.setKey(key);
         FirebaseDatabase.getInstance().getReference("Users")
-                .child(uid).child("FoodStores").push().setValue(foodStore).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .child(uid).child("FoodStores").child(foodStore.getKey()).setValue(foodStore).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -329,6 +330,7 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
         foodStore.setLatitude(mLatitude);
         foodStore.setLongtiude(mLongtitude);
         foodStore.setImageUrls(imageDownloadURL);
+        foodStore.setShared(false);
         return foodStore ;
     }
 
@@ -339,7 +341,6 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
         int pickImagePermission = ActivityCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE);
         if (pickImagePermission == PackageManager.PERMISSION_GRANTED){
             nowImage = view.getId();
-            Log.d(TAG, "onClick: "+nowImage);
             getPicture();
         }else{
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_READ_IMG);
