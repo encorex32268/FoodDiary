@@ -59,7 +59,9 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
     private GoogleMap mMap;
     private EditText edStoreName;
     private RatingBar ratingBar;
-    private EditText edNote;
+    private EditText edMoneyMin;
+    private EditText edMoneyMax;
+
     private TextView addressText;
     private double mLatitude;
     private double mLongtitude;
@@ -73,6 +75,7 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
     private List<Uri> uriList = new ArrayList<>();
     private List<String> imageDownloadURL;
     private ConstraintLayout progressbarConstraintLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +91,8 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
     private void findViews() {
         edStoreName = findViewById(R.id.edStoreName);
         ratingBar = findViewById(R.id.ratingBar);
-        edNote = findViewById(R.id.edNote);
+        edMoneyMin = findViewById(R.id.edMoneyMin);
+        edMoneyMax = findViewById(R.id.edMoneyMax);
         addressText = findViewById(R.id.address);
         foodImage1 = findViewById(R.id.foodImage1);
         foodImage2 = findViewById(R.id.foodImage2);
@@ -303,7 +307,15 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
         FoodStore foodStore = new FoodStore();
         String name = edStoreName.getText().toString();
         float rate = ratingBar.getRating();
-        String note = edNote.getText().toString();
+        int moneyMin = 0 ;
+        int moneyMax = 0 ;
+        try {
+             moneyMin = Integer.parseInt(edMoneyMin.getText().toString());
+             moneyMax  = Integer.parseInt(edMoneyMax.getText().toString());
+        }catch (NumberFormatException e){
+            moneyMin = 0 ;
+            moneyMax = 0 ;
+        }
         String address = addressText.getText().toString();
         Date date = new Date();
         String pattern = "yyyy/MM/dd HH:mm:SS";
@@ -311,7 +323,8 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
         foodStore.setDate(simpleDateFormat.format(date));
         foodStore.setName(name);
         foodStore.setRate(rate);
-        foodStore.setNote(note);
+        foodStore.setMoneyMin(moneyMin);
+        foodStore.setMoneyMax(moneyMax);
         foodStore.setAddress(address);
         foodStore.setLatitude(mLatitude);
         foodStore.setLongtiude(mLongtitude);

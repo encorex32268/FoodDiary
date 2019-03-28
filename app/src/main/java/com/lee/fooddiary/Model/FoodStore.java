@@ -8,11 +8,11 @@ import java.util.List;
 
 public class FoodStore implements Parcelable {
 
-
     String name;
     String date;
     float rate;
-    String note;
+    int moneyMin;
+    int moneyMax;
     String address;
     double latitude;
     double longtiude;
@@ -50,14 +50,6 @@ public class FoodStore implements Parcelable {
         this.rate = rate;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -82,6 +74,28 @@ public class FoodStore implements Parcelable {
         this.longtiude = longtiude;
     }
 
+
+    public int getMoneyMin() {
+        return moneyMin;
+    }
+
+    public void setMoneyMin(int moneyMin) {
+        this.moneyMin = moneyMin;
+    }
+
+    public int getMoneyMax() {
+        return moneyMax;
+    }
+
+    public void setMoneyMax(int moneyMax) {
+        this.moneyMax = moneyMax;
+    }
+
+
+    public FoodStore() {
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -92,21 +106,20 @@ public class FoodStore implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.date);
         dest.writeFloat(this.rate);
-        dest.writeString(this.note);
+        dest.writeInt(this.moneyMin);
+        dest.writeInt(this.moneyMax);
         dest.writeString(this.address);
         dest.writeDouble(this.latitude);
         dest.writeDouble(this.longtiude);
         dest.writeStringList(this.imageUrls);
     }
 
-    public FoodStore() {
-    }
-
     protected FoodStore(Parcel in) {
         this.name = in.readString();
         this.date = in.readString();
         this.rate = in.readFloat();
-        this.note = in.readString();
+        this.moneyMin = in.readInt();
+        this.moneyMax = in.readInt();
         this.address = in.readString();
         this.latitude = in.readDouble();
         this.longtiude = in.readDouble();
@@ -124,18 +137,4 @@ public class FoodStore implements Parcelable {
             return new FoodStore[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "FoodStore{" +
-                "name='" + name + '\'' +
-                ", date='" + date + '\'' +
-                ", rate=" + rate +
-                ", note='" + note + '\'' +
-                ", address='" + address + '\'' +
-                ", latitude=" + latitude +
-                ", longtiude=" + longtiude +
-                ", imageUrls=" + imageUrls +
-                '}';
-    }
 }
