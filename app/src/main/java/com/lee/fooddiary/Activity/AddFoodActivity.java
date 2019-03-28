@@ -14,7 +14,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -328,7 +327,7 @@ public class AddFoodActivity extends AppCompatActivity implements OnMapReadyCall
         foodStore.setMoneyMax(moneyMax);
         foodStore.setAddress(address);
         foodStore.setLatitude(mLatitude);
-        foodStore.setLongtiude(mLongtitude);
+        foodStore.setLongitude(mLongtitude);
         foodStore.setImageUrls(imageDownloadURL);
         foodStore.setShared(false);
         return foodStore ;

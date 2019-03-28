@@ -61,7 +61,10 @@ public class MyFoodFragment extends Fragment implements FirebaseAuth.AuthStateLi
         recyclerFoodStore = rootView.findViewById(R.id.recyclerFoodStore);
         userText = rootView.findViewById(R.id.userText);
         mAuth = FirebaseAuth.getInstance();
-        setUpRecyclerView();
+
+        if (mAuth.getUid() !=null){
+            setUpRecyclerView();
+        }
         return rootView;
     }
 

@@ -15,7 +15,7 @@ public class FoodStore implements Parcelable {
     int moneyMax;
     String address;
     double latitude;
-    double longtiude;
+    double longitude;
     List<String> imageUrls = new ArrayList<>();
     boolean isShared ;
     String key ;
@@ -84,12 +84,12 @@ public class FoodStore implements Parcelable {
         this.latitude = latitude;
     }
 
-    public double getLongtiude() {
-        return longtiude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtiude(double longtiude) {
-        this.longtiude = longtiude;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
 
@@ -125,7 +125,7 @@ public class FoodStore implements Parcelable {
                 ", moneyMax=" + moneyMax +
                 ", address='" + address + '\'' +
                 ", latitude=" + latitude +
-                ", longtiude=" + longtiude +
+                ", longitude=" + longitude +
                 ", imageUrls=" + imageUrls +
                 ", isShared=" + isShared +
                 ", key='" + key + '\'' +
@@ -146,7 +146,7 @@ public class FoodStore implements Parcelable {
         dest.writeInt(this.moneyMax);
         dest.writeString(this.address);
         dest.writeDouble(this.latitude);
-        dest.writeDouble(this.longtiude);
+        dest.writeDouble(this.longitude);
         dest.writeStringList(this.imageUrls);
         dest.writeByte(this.isShared ? (byte) 1 : (byte) 0);
         dest.writeString(this.key);
@@ -160,7 +160,7 @@ public class FoodStore implements Parcelable {
         this.moneyMax = in.readInt();
         this.address = in.readString();
         this.latitude = in.readDouble();
-        this.longtiude = in.readDouble();
+        this.longitude = in.readDouble();
         this.imageUrls = in.createStringArrayList();
         this.isShared = in.readByte() != 0;
         this.key = in.readString();
